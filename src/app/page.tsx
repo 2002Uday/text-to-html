@@ -6,7 +6,7 @@ import { MdContentCopy, MdCheck, MdDownload } from 'react-icons/md';
 export default function TextFormatter() {
   const [inputText, setInputText] = useState('');
   const [formattedHtml, setFormattedHtml] = useState('');
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(20);
   const [copySuccess, setCopySuccess] = useState(false);
 
   // Function to format plain text to HTML
@@ -97,7 +97,7 @@ export default function TextFormatter() {
     }
 
     // Create complete HTML document
-    const completeHtml = `<!DOCTYPE HTML>\n<HTML>\n<HEAD>\n    <TITLE>Prasang</TITLE>\n    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">\n</HEAD>\n<BODY>\n    <div>\n${html}    </div>\n</BODY>\n\n</HTML>`;
+    const completeHtml = `<!DOCTYPE HTML>\n<HTML>\n<HEAD>\n    <TITLE>Prasang</TITLE>\n    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">\n    <script>\n        function resizeText(multiplier) {\n            if (document.body.style.fontSize == \"\") {\n                document.body.style.fontSize = \"1.0em\";\n            }\n            document.body.style.fontSize = parseFloat(document.body.style.fontSize) + (multiplier * 0.1) + \"em\";\n        }\n    </script>\n</HEAD>\n<BODY>\n    <div class=\"wrap\">\n        <ul class=\"reader_tools noselect\">\n            <li><button class=\"inc_fontsize\" onclick=\"resizeText(1)\">A+</button></li>\n            <li><button class=\"dec_fontsize\" onClick=\"resizeText(-1)\">A-</button></li>\n        </ul>\n    </div>\n    <div>\n${html}    </div>\n</BODY>\n\n</HTML>`;
 
     setFormattedHtml(completeHtml);
   };
@@ -113,15 +113,15 @@ export default function TextFormatter() {
     }
   };
 
-  // Download HTML file function
+  // Download text file function
   const downloadHtmlFile = () => {
     if (!formattedHtml) return;
     
-    const blob = new Blob([formattedHtml], { type: 'text/html' });
+    const blob = new Blob([formattedHtml], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'formatted-text.html';
+    a.download = 'formatted-text.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
